@@ -29,6 +29,8 @@ aws iam create-policy \
     --policy-document file://iam-policy.json
 ```
 
+Whats the below command doing ?
+
 eksctl creates an IAM role behind the scenes.
 It attaches the specified policy (AWSLoadBalancerControllerIAMPolicy) to that role.
 Then, it associates the role with the Kubernetes service account (aws-load-balancer-controller).
@@ -52,6 +54,9 @@ eksctl create iamserviceaccount \
 ```
 helm repo add eks https://aws.github.io/eks-charts
 ```
+
+Whats the below command doing ?
+
 This command installs the AWS Load Balancer Controller in your EKS cluster using Helm.
 
 ✅ The AWS Load Balancer Controller gets deployed in EKS.
