@@ -37,7 +37,9 @@ Then, it associates the role with the Kubernetes service account (aws-load-balan
 
 Who Gets the IAM Role?
 The IAM role is not attached to your IAM user. 🚫
+
 It is linked to the Kubernetes service account (aws-load-balancer-controller) inside the kube-system namespace. ✅
+
 Any Pod using the service account (aws-load-balancer-controller) in EKS can assume this role.
 
 ```
@@ -60,7 +62,9 @@ Whats the below command doing ?
 This command installs the AWS Load Balancer Controller in your EKS cluster using Helm.
 
 ✅ The AWS Load Balancer Controller gets deployed in EKS.
+
 ✅ It uses the IAM service account (aws-load-balancer-controller) to get the required permissions.
+
 ✅ Now, Kubernetes Ingress and Service objects can automatically create ALBs and NLBs
 
 ```
