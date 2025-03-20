@@ -1,6 +1,7 @@
 # Ingress Controller
+# ULTIMATE ROLE IS TO INSTALL ALB CONTROLLER IN KUBERNETES
 ---------------------------------------------------------------------
-OIDC provider:
+1. OIDC provider: --> to use IAM roles we need this provider
 Need of OIDC provider
 Let's say you have an application running in a Kubernetes Pod that needs to read/write data to S3.
 
@@ -17,21 +18,25 @@ eksctl utils associate-iam-oidc-provider \
     --approve
 ```
 ---------------------------------------------------------------------
-
+2. IAM policy content json download for aws alb controller 
 
 ```
 curl -o iam-policy.json https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.10.0/docs/install/iam_policy.json
 ```
 ---------------------------------------------------------------------
+3. creating a policy using the above content
 ```
 aws iam create-policy \
     --policy-name AWSLoadBalancerControllerIAMPolicy \
     --policy-document file://iam-policy.json
 ```
 ---------------------------------------------------------------------
-Whats the below command doing ?
+4. creating a service account ,  attaching policy to IAM role(role will get created by k8) and attaching that role  to k8 account 
 
-eksctl creates an IAM role behind the scenes.
+Whats the below command doing ?
+Since Kubernetes does not natively understand AWS IAM, we manually create a Service Account and link it to an IAM Role using IAM Roles for Service Accounts (IRSA). This lets Kubernetes pods securely assume AWS IAM roles.
+
+eksctl creates an IAM role behind the scenes automatically.
 It attaches the specified policy (AWSLoadBalancerControllerIAMPolicy) to that role.
 Then, it associates the role with the Kubernetes service account (aws-load-balancer-controller).
 
@@ -53,10 +58,12 @@ eksctl create iamserviceaccount \
 --approve
 ```
 ---------------------------------------------------------------------
+5. creating a helm chart
 ```
 helm repo add eks https://aws.github.io/eks-charts
 ```
 ---------------------------------------------------------------------
+6. installing alb controller to controll aws alb in that repo  
 Whats the below command doing ?
 
 This command installs the AWS Load Balancer Controller in your EKS cluster using Helm.
